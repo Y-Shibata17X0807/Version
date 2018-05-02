@@ -175,8 +175,8 @@ namespace 原価試算書作成ツール
         private bool ReadEx()//セルの情報読み取り
         {
             IRow row; ICell cell;
-            //var FilePath = Input.Text;
-            var FilePath = @"\\Gserver\999_個人フォルダ\柴田\原価試算作成ツール\課題\RFP18041301_見積り情報シート(西部電機様_バルコン本体).xls";
+            var FilePath = Input.Text;
+            //var FilePath = @"\\Gserver\999_個人フォルダ\柴田\原価試算作成ツール\課題\RFP18041301_見積り情報シート(西部電機様_バルコン本体).xls";
             var work = WorkbookFactory.Create(FilePath);
             var Sheet = work.GetSheetAt(0);
 
