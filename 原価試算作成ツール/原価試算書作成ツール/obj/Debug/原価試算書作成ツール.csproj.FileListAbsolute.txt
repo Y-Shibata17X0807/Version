@@ -13,3 +13,6 @@ C:\Users\HANO-SS\Documents\Visual Studio 2015\Projects\原価試算書作成ツ�
 C:\Users\HANO-SS\Documents\Visual Studio 2015\Projects\原価試算書作成ツール\原価試算書作成ツール\obj\Debug\原価試算書作成ツール.exe
 C:\Users\HANO-SS\Documents\Visual Studio 2015\Projects\原価試算書作成ツール\原価試算書作成ツール\obj\Debug\原価試算書作成ツール.pdb
 C:\Users\HANO-SS\Documents\Visual Studio 2015\Projects\原価試算書作成ツール\原価試算書作成ツール\obj\Debug\原価試算書作成ツール.csprojResolveAssemblyReference.cache
+C:\Users\HANO-SS\Source\Repos\Version\原価試算作成ツール\原価試算書作成ツール\bin\Debug\原価試算書作成ツール.exe.config
+C:\Users\HANO-SS\Source\Repos\Version\原価試算作成ツール\原価試算書作成ツール\obj\Debug\原価試算書作成ツール.exe
+C:\Users\HANO-SS\Source\Repos\Version\原価試算作成ツール\原価試算書作成ツール\obj\Debug\原価試算書作成ツール.pdb

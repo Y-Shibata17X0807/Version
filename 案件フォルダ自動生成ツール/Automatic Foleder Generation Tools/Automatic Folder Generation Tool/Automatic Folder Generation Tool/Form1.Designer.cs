@@ -43,10 +43,7 @@
             this.label7 = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.ファイルToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ヘルプToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.iniファイルを読み込むToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.問い合わせToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.バージョン情報ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -174,8 +171,7 @@
             // 
             this.menuStrip1.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ファイルToolStripMenuItem,
-            this.ヘルプToolStripMenuItem});
+            this.ファイルToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(719, 26);
@@ -190,35 +186,12 @@
             this.ファイルToolStripMenuItem.Size = new System.Drawing.Size(68, 22);
             this.ファイルToolStripMenuItem.Text = "ファイル";
             // 
-            // ヘルプToolStripMenuItem
-            // 
-            this.ヘルプToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.問い合わせToolStripMenuItem,
-            this.バージョン情報ToolStripMenuItem});
-            this.ヘルプToolStripMenuItem.Name = "ヘルプToolStripMenuItem";
-            this.ヘルプToolStripMenuItem.Size = new System.Drawing.Size(56, 22);
-            this.ヘルプToolStripMenuItem.Text = "ヘルプ";
-            // 
             // iniファイルを読み込むToolStripMenuItem
             // 
             this.iniファイルを読み込むToolStripMenuItem.Name = "iniファイルを読み込むToolStripMenuItem";
             this.iniファイルを読み込むToolStripMenuItem.Size = new System.Drawing.Size(197, 22);
             this.iniファイルを読み込むToolStripMenuItem.Text = "iniファイルを読み込む";
             this.iniファイルを読み込むToolStripMenuItem.Click += new System.EventHandler(this.iniファイルを読み込むToolStripMenuItem_Click);
-            // 
-            // 問い合わせToolStripMenuItem
-            // 
-            this.問い合わせToolStripMenuItem.Name = "問い合わせToolStripMenuItem";
-            this.問い合わせToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
-            this.問い合わせToolStripMenuItem.Text = "問い合わせ";
-            this.問い合わせToolStripMenuItem.Click += new System.EventHandler(this.問い合わせToolStripMenuItem_Click);
-            // 
-            // バージョン情報ToolStripMenuItem
-            // 
-            this.バージョン情報ToolStripMenuItem.Name = "バージョン情報ToolStripMenuItem";
-            this.バージョン情報ToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
-            this.バージョン情報ToolStripMenuItem.Text = "バージョン情報";
-            this.バージョン情報ToolStripMenuItem.Click += new System.EventHandler(this.バージョン情報ToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -267,9 +240,6 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem ファイルToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem iniファイルを読み込むToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ヘルプToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 問い合わせToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem バージョン情報ToolStripMenuItem;
     }
 }
 

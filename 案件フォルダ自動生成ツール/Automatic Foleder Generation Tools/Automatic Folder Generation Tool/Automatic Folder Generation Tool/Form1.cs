@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualBasic;
 using System;
 using System.IO;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -15,7 +16,6 @@ namespace Automatic_Folder_Generation_Tool
             InitializeComponent();
         }
 
-        private string iniFileName = AppDomain.CurrentDomain.BaseDirectory + "FolderSetting.ini";
         private string[] iniArray = new string[30];
         private int FolderCounter;
         private string result;
@@ -316,6 +316,7 @@ namespace Automatic_Folder_Generation_Tool
                 ofd.RestoreDirectory = true;
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
+                    var iniFileName = ofd.FileName;
                     FolderList.Items.Clear();
                     int iniLines = (File.ReadAllLines(iniFileName).Length) - 1;
                     //セクション名取得
@@ -480,14 +481,6 @@ namespace Automatic_Folder_Generation_Tool
                 Close();
                 return;
             }
-        }
-
-        private void 問い合わせToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void バージョン情報ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
         }
     }
 }
