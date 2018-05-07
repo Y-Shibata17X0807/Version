@@ -69,6 +69,8 @@ namespace Automatic_Folder_Generation_Tool
             }
             catch (Exception)
             {
+                MessageBox.Show("エラーが発生しましたので、アプリを終了します。");
+                Close();
             }
             CreateBtn.Enabled = true;
             //フォームが最小化されないようにする
