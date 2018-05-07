@@ -32,18 +32,40 @@ namespace 原価試算書作成ツール
         private void Dialog1_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.RestoreDirectory = true;
-            ofd.InitialDirectory = @"\\Gserver\002_各種物件";
-            ofd.Title = "見積もり情報シートを選択して下さい";
+
+            // 元のカレントホルダを保持
+            string present_dir = Directory.GetCurrentDirectory();
             ofd.Filter = "Excel 97-2003形式(*.xls)|*.xls|Excelワークシート(*.xlsx)|*.xlsx";
-            //ダイアログを表示する
+            ofd.Title = "見積もり情報シートを選択して下さい";
+            ofd.FileName = "";
+            string file_path = "";
+
+            if (ofd.InitialDirectory == null)
+            {
+                ofd.InitialDirectory = @"\\Gserver\002_各種物件";
+            }
+
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                //OKボタンがクリックされたとき、選択されたファイル名を表示する
-                Console.WriteLine(ofd.FileName);
-                Input.Text = ofd.FileName;
+                file_path = ofd.FileName;
+                ofd.InitialDirectory = Directory.GetCurrentDirectory();
             }
+            // カレントディレクトリを元に戻す
+            Directory.SetCurrentDirectory(present_dir);
             ofd.Dispose();
+            try
+            {
+                if (File.Exists(file_path) == true)
+                {
+                    Console.WriteLine(file_path);
+                    Input.Text = file_path;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                return;
+            }
         }
 
         private void Dialog2Btn_Click(object sender, EventArgs e)
@@ -61,38 +83,45 @@ namespace 原価試算書作成ツール
 
         private void CreateBtn_Click(object sender, EventArgs e)
         {
-            if (check() == true)
+            try
             {
-                if (Copy() == true)
+                if (check() == true)
                 {
-                    Console.WriteLine("コピーに成功");
-                    if (ReadEx() == true)
+                    if (Copy() == true)
                     {
-                        if (WriteExManu() == true)
+                        Console.WriteLine("コピーに成功");
+                        if (ReadEx() == true)
                         {
-                            File.Move(DeskPath + @"\HR40-C001_製造原価試算書_T.xlsx",
-                            DeskPath + @"\【" + ExcelInfo[0] + "-C0" + ExcelInfo[9] + "】" + "製造原価試算書.xlsx");
+                            if (WriteExManu() == true)
+                            {
+                                File.Move(DeskPath + @"\HR40-C001_製造原価試算書_T.xlsx",
+                                DeskPath + @"\【" + ExcelInfo[0] + "-C0" + ExcelInfo[9] + "】" + "製造原価試算書.xlsx");
+                            }
+                            else
+                            {
+                                MessageBox.Show("製造原価試算書の作成に失敗しました。");
+                                return;
+                            }
+                            if (WriteExDev() == true)
+                            {
+                                File.Move(DeskPath + @"\HR209-C101_開発原価試算書_T.xlsx",
+                                DeskPath + @"\【" + ExcelInfo[0] + "-C1" + ExcelInfo[9] + "】" + "開発原価試算書.xlsx");
+                                MessageBox.Show("原価試算書の作成が完了しました。");
+                            }
+                            else
+                            {
+                                MessageBox.Show("開発原価試算書の作成に失敗しました。");
+                                return;
+                            }
                         }
                         else
                         {
-                            MessageBox.Show("製造原価試算書の作成に失敗しました。");
-                            return;
-                        }
-                        if (WriteExDev() == true)
-                        {
-                            File.Move(DeskPath + @"\HR209-C101_開発原価試算書_T.xlsx",
-                            DeskPath + @"\【" + ExcelInfo[0] + "-C1" + ExcelInfo[9] + "】" + "開発原価試算書.xlsx");
-                            MessageBox.Show("原価試算書の作成が完了しました。");
-                        }
-                        else
-                        {
-                            MessageBox.Show("開発原価試算書の作成に失敗しました。");
+                            Console.WriteLine("見積もり情報シートからデータを読み込むのに失敗しました");
                             return;
                         }
                     }
                     else
                     {
-                        Console.WriteLine("見積もり情報シートからデータを読み込むのに失敗しました");
                         return;
                     }
                 }
@@ -100,15 +129,17 @@ namespace 原価試算書作成ツール
                 {
                     return;
                 }
+                File.Delete(DeskPath + @"\HR40-C001_製造原価試算書_T.xlsx");
+                File.Delete(DeskPath + @"\HR209-C101_開発原価試算書_T.xlsx");
+                //File.Delete(DeskPath + @"\HR40-C001_製造原価試算書.xlsx");
+                //File.Delete(DeskPath + @"\HR209-C101_開発原価試算書.xlsx");
             }
-            else
+            catch (Exception ex)
             {
-                return;
+                if (ex is IOException)
+                {
+                }
             }
-            File.Delete(DeskPath + @"\HR40-C001_製造原価試算書_T.xlsx");
-            File.Delete(DeskPath + @"\HR209-C101_開発原価試算書_T.xlsx");
-            //File.Delete(DeskPath + @"\HR40-C001_製造原価試算書.xlsx");
-            //File.Delete(DeskPath + @"\HR209-C101_開発原価試算書.xlsx");
         }
 
         private bool Copy()
@@ -140,13 +171,6 @@ namespace 原価試算書作成ツール
 
         private bool check()
         {
-            FileInfo Infi = new FileInfo(Input.Text);
-            DirectoryInfo infoIn = Infi.Directory;
-            var InPath = infoIn.FullName;
-
-            FileInfo OuFi = new FileInfo(Output.Text);
-            DirectoryInfo OuInfo = OuFi.Directory;
-            var OutPath = OuInfo.FullName;
             if (Input.Text.Trim() == "")
             {
                 MessageBox.Show("見積もり情報シートが未選択です");
@@ -157,6 +181,13 @@ namespace 原価試算書作成ツール
                 MessageBox.Show("保存先が未選択です");
                 return false;
             }
+            FileInfo Infi = new FileInfo(Input.Text);
+            DirectoryInfo infoIn = Infi.Directory;
+            var InPath = infoIn.FullName;
+
+            FileInfo OuFi = new FileInfo(Output.Text);
+            DirectoryInfo OuInfo = OuFi.Directory;
+            var OutPath = OuInfo.FullName;
 
             if (Directory.Exists(InPath) == false)
             {
@@ -220,7 +251,6 @@ namespace 原価試算書作成ツール
             ExcelInfo[9] = ExcelInfo[8].Substring(3, 2);
 
             work.Close();
-
             return true;
         }
 
