@@ -92,10 +92,12 @@ namespace 原価試算書作成ツール
                         Console.WriteLine("コピーに成功");
                         if (ReadEx() == true)
                         {
+                            DirectoryInfo di = new DirectoryInfo(DeskPath + @"\原紙試算書フォルダ");
+                            di.Create();
                             if (WriteExManu() == true)
                             {
-                                File.Move(DeskPath + @"\HR40-C001_製造原価試算書_T.xlsx",
-                                DeskPath + @"\【" + ExcelInfo[0] + "-C0" + ExcelInfo[9] + "】" + "製造原価試算書.xlsx");
+                                File.Move(DeskPath + @"\HR40-C001_製造原価試算書.xlsx",
+                                DeskPath + @"\原紙試算書フォルダ\【" + ExcelInfo[0] + "-C0" + ExcelInfo[9] + "】" + "製造原価試算書.xlsx");
                             }
                             else
                             {
@@ -104,8 +106,8 @@ namespace 原価試算書作成ツール
                             }
                             if (WriteExDev() == true)
                             {
-                                File.Move(DeskPath + @"\HR209-C101_開発原価試算書_T.xlsx",
-                                DeskPath + @"\【" + ExcelInfo[0] + "-C1" + ExcelInfo[9] + "】" + "開発原価試算書.xlsx");
+                                File.Move(DeskPath + @"\HR209-C101_開発原価試算書.xlsx",
+                                DeskPath + @"\原紙試算書フォルダ\【" + ExcelInfo[0] + "-C1" + ExcelInfo[9] + "】" + "開発原価試算書.xlsx");
                                 MessageBox.Show("原価試算書の作成が完了しました。");
                             }
                             else
@@ -129,15 +131,15 @@ namespace 原価試算書作成ツール
                 {
                     return;
                 }
-                File.Delete(DeskPath + @"\HR40-C001_製造原価試算書_T.xlsx");
-                File.Delete(DeskPath + @"\HR209-C101_開発原価試算書_T.xlsx");
-                //File.Delete(DeskPath + @"\HR40-C001_製造原価試算書.xlsx");
-                //File.Delete(DeskPath + @"\HR209-C101_開発原価試算書.xlsx");
+                File.Delete(DeskPath + @"\HR40-C001_製造原価試算書.xlsx");
+                File.Delete(DeskPath + @"\HR209-C101_開発原価試算書.xlsx");
             }
             catch (Exception ex)
             {
                 if (ex is IOException)
                 {
+                    MessageBox.Show(ex.ToString());
+                    return;
                 }
             }
         }
@@ -250,7 +252,6 @@ namespace 原価試算書作成ツール
 
             ExcelInfo[9] = ExcelInfo[8].Substring(3, 2);
 
-            work.Close();
             return true;
         }
 
@@ -258,9 +259,11 @@ namespace 原価試算書作成ツール
         {
             try
             {
-                var WritePath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + @"\HR40-C001_製造原価試算書.xlsx";
-                var WWork = WorkbookFactory.Create(WritePath);
+                var WritePath = DeskPath + @"\HR40-C001_製造原価試算書.xlsx";
+                FileStream fs = new FileStream(WritePath, FileMode.Open, FileAccess.Read);
+                var WWork = WorkbookFactory.Create(fs);
                 var WSheet = WWork.GetSheetAt(0);
+                ICreationHelper helper = WWork.GetCreationHelper();
                 var row = WSheet.GetRow(12);
                 var cell = row.GetCell(7);
                 cell.SetCellValue(ExcelInfo[0] + RepNum[2]);// -Q1
@@ -306,9 +309,11 @@ namespace 原価試算書作成ツール
                 cell = row.GetCell(9);
                 cell.SetCellValue(ExcelInfo[6]);//営業想定単価
 
-                using (var fs = new FileStream(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + @"\HR40-C001_製造原価試算書_T.xlsx", FileMode.Create))
+                using (var fs1 = new FileStream(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + @"\HR40-C001_製造原価試算書.xlsx", FileMode.Create, FileAccess.Write))
                 {
-                    WWork.Write(fs);
+                    WWork.Write(fs1);
+                    fs1.Close();
+                    WWork.Close();
                 }
             }
             catch (Exception ex)
@@ -324,7 +329,8 @@ namespace 原価試算書作成ツール
             try
             {
                 var WritePath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + @"\HR209-C101_開発原価試算書.xlsx";
-                var WWork = WorkbookFactory.Create(WritePath);
+                var fs = new FileStream(WritePath, FileMode.Open, FileAccess.Read);
+                var WWork = WorkbookFactory.Create(fs);
                 var WSheet = WWork.GetSheetAt(0);
                 var row = WSheet.GetRow(12);
                 var cell = row.GetCell(7);
@@ -370,9 +376,11 @@ namespace 原価試算書作成ツール
                 row = WSheet.GetRow(20);
                 cell = row.GetCell(9);
                 cell.SetCellValue(ExcelInfo[7]);//営業想定単価
-                using (var fs = new FileStream(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + @"\HR209-C101_開発原価試算書_T.xlsx", FileMode.Create))
+                using (var fs1 = new FileStream(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + @"\HR209-C101_開発原価試算書.xlsx", FileMode.Create, FileAccess.Write))
                 {
-                    WWork.Write(fs);
+                    WWork.Write(fs1);
+                    fs1.Close();
+                    WWork.Close();
                 }
             }
             catch (Exception ex)
