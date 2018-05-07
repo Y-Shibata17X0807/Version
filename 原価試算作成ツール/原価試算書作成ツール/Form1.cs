@@ -27,6 +27,9 @@ namespace 原価試算書作成ツール
             RepNum[1] = "-C0";
             RepNum[2] = "-Q1";
             RepNum[3] = "-C1";
+            MaximumSize = Size;
+            MinimumSize = Size;
+            MaximizeBox = !MaximizeBox;
         }
 
         private void Dialog1_Click(object sender, EventArgs e)
@@ -312,6 +315,7 @@ namespace 原価試算書作成ツール
                 using (var fs1 = new FileStream(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + @"\HR40-C001_製造原価試算書.xlsx", FileMode.Create, FileAccess.Write))
                 {
                     WWork.Write(fs1);
+                    fs.Close();
                     fs1.Close();
                     WWork.Close();
                 }
@@ -379,6 +383,7 @@ namespace 原価試算書作成ツール
                 using (var fs1 = new FileStream(Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + @"\HR209-C101_開発原価試算書.xlsx", FileMode.Create, FileAccess.Write))
                 {
                     WWork.Write(fs1);
+                    fs.Close();
                     fs1.Close();
                     WWork.Close();
                 }
