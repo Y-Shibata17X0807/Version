@@ -121,7 +121,7 @@ namespace 原価試算書作成ツール
                         }
                         else
                         {
-                            Console.WriteLine("見積もり情報シートからデータを読み込むのに失敗しました");
+                            MessageBox.Show("見積もり情報シートからデータを読み込むのに失敗しました");
                             return;
                         }
                     }
@@ -254,7 +254,15 @@ namespace 原価試算書作成ツール
             ExcelInfo[8] = sp1[1].Substring(8, 5);//開発工番のみ
 
             ExcelInfo[9] = ExcelInfo[8].Substring(3, 2);
-
+            for (int i = 0; i < 10; i++)
+            {
+                if (ExcelInfo[i] == "")
+                {
+                    MessageBox.Show("空白のセルが存在します。" + "\r\n"
+                        + "空白セルには「****」を挿入します。");
+                    ExcelInfo[i] = "****";
+                }
+            }
             return true;
         }
 
