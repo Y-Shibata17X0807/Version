@@ -105,6 +105,8 @@ namespace 原価試算書作成ツール
                             else
                             {
                                 MessageBox.Show("製造原価試算書の作成に失敗しました。");
+                                File.Delete(DeskPath + @"\HR40-C001_製造原価試算書.xlsx");
+                                File.Delete(DeskPath + @"\HR209-C101_開発原価試算書.xlsx");
                                 return;
                             }
                             if (WriteExDev() == true)
@@ -116,6 +118,8 @@ namespace 原価試算書作成ツール
                             else
                             {
                                 MessageBox.Show("開発原価試算書の作成に失敗しました。");
+                                File.Delete(DeskPath + @"\HR40-C001_製造原価試算書.xlsx");
+                                File.Delete(DeskPath + @"\HR209-C101_開発原価試算書.xlsx");
                                 return;
                             }
                         }
@@ -258,9 +262,16 @@ namespace 原価試算書作成ツール
             {
                 if (ExcelInfo[i] == "")
                 {
-                    MessageBox.Show("空白のセルが存在します。" + "\r\n"
-                        + "空白セルには「****」を挿入します。");
-                    ExcelInfo[i] = "****";
+                    DialogResult dr = MessageBox.Show("空白のセルが存在します。" + "\r\n"
+                        + "空白セルには「---」を挿入しますが、よろしいですか？", "確認", MessageBoxButtons.OKCancel);
+                    if (dr == DialogResult.OK)
+                    {
+                        ExcelInfo[i] = "---";
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
             }
             return true;
@@ -330,8 +341,27 @@ namespace 原価試算書作成ツール
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
-                return false;
+                if (ex is IOException)
+                {
+                    MessageBox.Show("書き込みに失敗しました");
+                    return false;
+                }
+                else if (ex is FileNotFoundException)
+                {
+                    MessageBox.Show("製造原価試算書のファイルが見つかりませんでした。");
+                    return false;
+                }
+                else if (ex is UnauthorizedAccessException)
+                {
+                    MessageBox.Show("ファイルへのアクセスが拒否されました。");
+                    return false;
+                }
+                else
+                {
+                    MessageBox.Show("原因不明のエラーが発生しました。");
+                    Console.WriteLine(ex.ToString());
+                    return false;
+                }
             }
             return true;
         }
@@ -410,6 +440,7 @@ namespace 原価試算書作成ツール
                 }
                 else
                 {
+                    Console.WriteLine(ex.ToString());
                     MessageBox.Show("不明なエラーが発生しました");
                     return false;
                 }
