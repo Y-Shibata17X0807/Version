@@ -1,8 +1,8 @@
-﻿using System;
+﻿using NPOI.SS.UserModel;
+using System;
 using System.IO;
-using System.Windows.Forms;
-using NPOI.SS.UserModel;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace 原価試算書作成ツール
 {
@@ -125,30 +125,35 @@ namespace 原価試算書作成ツール
                         }
                         else
                         {
-                            MessageBox.Show("見積もり情報シートからデータを読み込むのに失敗しました");
+                            File.Delete(DeskPath + @"\HR40-C001_製造原価試算書.xlsx");
+                            File.Delete(DeskPath + @"\HR209-C101_開発原価試算書.xlsx");
                             return;
                         }
                     }
                     else
                     {
+                        File.Delete(DeskPath + @"\HR40-C001_製造原価試算書.xlsx");
+                        File.Delete(DeskPath + @"\HR209-C101_開発原価試算書.xlsx");
                         return;
                     }
                 }
                 else
                 {
+                    File.Delete(DeskPath + @"\HR40-C001_製造原価試算書.xlsx");
+                    File.Delete(DeskPath + @"\HR209-C101_開発原価試算書.xlsx");
                     return;
                 }
-                File.Delete(DeskPath + @"\HR40-C001_製造原価試算書.xlsx");
-                File.Delete(DeskPath + @"\HR209-C101_開発原価試算書.xlsx");
             }
             catch (Exception ex)
             {
                 if (ex is IOException)
                 {
-                    MessageBox.Show(ex.ToString());
+                    MessageBox.Show("既に同じ名前のファイルが存在します");
                     return;
                 }
             }
+            File.Delete(DeskPath + @"\HR40-C001_製造原価試算書.xlsx");
+            File.Delete(DeskPath + @"\HR209-C101_開発原価試算書.xlsx");
         }
 
         private bool Copy()
@@ -214,64 +219,89 @@ namespace 原価試算書作成ツール
 
         private bool ReadEx()//セルの情報読み取り
         {
-            IRow row; ICell cell;
-            var FilePath = Input.Text;
-            //var FilePath = @"\\Gserver\999_個人フォルダ\柴田\原価試算作成ツール\課題\RFP18041301_見積り情報シート(西部電機様_バルコン本体).xls";
-            var work = WorkbookFactory.Create(FilePath);
-            var Sheet = work.GetSheetAt(0);
-
-            row = Sheet.GetRow(0);//行
-            cell = row.GetCell(11);
-            string[] sp = cell.ToString().Split('：');//開発受付番号を全角「：」から分割
-            ExcelInfo[0] = sp[1].Substring(0, 8);//開発工番のみ
-
-            row = Sheet.GetRow(8);
-            cell = row.GetCell(1);
-            ExcelInfo[1] = cell.ToString();//件名
-
-            row = Sheet.GetRow(9);
-            cell = row.GetCell(1);
-            ExcelInfo[2] = cell.ToString();//顧客名
-
-            row = Sheet.GetRow(7);
-            cell = row.GetCell(1);
-            ExcelInfo[3] = "●";//見積もり種別（■）
-
-            row = Sheet.GetRow(7);
-            cell = row.GetCell(3);
-            ExcelInfo[4] = "○";//見積もり種別（□）
-
-            ExcelInfo[5] = "Ver.1";//バージョン
-
-            row = Sheet.GetRow(37);//行
-            cell = row.GetCell(3);
-            ExcelInfo[6] = cell.ToString();//営業想定単価（想定単価）
-
-            row = Sheet.GetRow(36);//行
-            cell = row.GetCell(1);
-            sp = cell.ToString().Split('想');//「想」から分割
-            ExcelInfo[7] = sp[0];//開発費
-
-            row = Sheet.GetRow(0);//行
-            cell = row.GetCell(11);
-            string[] sp1 = cell.ToString().Split('：');//開発受付番号を全角「：」から分割
-            ExcelInfo[8] = sp1[1].Substring(8, 5);//開発工番のみ
-
-            ExcelInfo[9] = ExcelInfo[8].Substring(3, 2);
-            for (int i = 0; i < 10; i++)
+            try
             {
-                if (ExcelInfo[i] == "")
+                IRow row; ICell cell;
+                var FilePath = Input.Text;
+                var work = WorkbookFactory.Create(FilePath);
+                var Sheet = work.GetSheetAt(0);
+
+                row = Sheet.GetRow(0);//行
+                cell = row.GetCell(11);
+                string[] sp = cell.ToString().Split('：');//開発受付番号を全角「：」から分割
+                if (sp[0] != "")
                 {
-                    DialogResult dr = MessageBox.Show("空白のセルが存在します。" + "\r\n"
-                        + "空白セルには「---」を挿入しますが、よろしいですか？", "確認", MessageBoxButtons.OKCancel);
-                    if (dr == DialogResult.OK)
+                    ExcelInfo[0] = sp[1].Substring(0, 8);//開発工番のみ
+
+                    row = Sheet.GetRow(8);
+                    cell = row.GetCell(1);
+                    ExcelInfo[1] = cell.ToString();//件名
+
+                    row = Sheet.GetRow(9);
+                    cell = row.GetCell(1);
+                    ExcelInfo[2] = cell.ToString();//顧客名
+
+                    row = Sheet.GetRow(7);
+                    cell = row.GetCell(1);
+                    ExcelInfo[3] = "●";//見積もり種別（■）
+
+                    row = Sheet.GetRow(7);
+                    cell = row.GetCell(3);
+                    ExcelInfo[4] = "○";//見積もり種別（□）
+
+                    ExcelInfo[5] = "Ver.1";//バージョン
+
+                    row = Sheet.GetRow(37);//行
+                    cell = row.GetCell(3);
+                    ExcelInfo[6] = cell.ToString();//営業想定単価（想定単価）
+
+                    row = Sheet.GetRow(36);//行
+                    cell = row.GetCell(1);
+                    sp = cell.ToString().Split('想');//「想」から分割
+                    ExcelInfo[7] = sp[0];//開発費
+
+                    row = Sheet.GetRow(0);//行
+                    cell = row.GetCell(11);
+                    string[] sp1 = cell.ToString().Split('：');//開発受付番号を全角「：」から分割
+                    ExcelInfo[8] = sp1[1].Substring(8, 5);//開発工番のみ
+
+                    ExcelInfo[9] = ExcelInfo[8].Substring(3, 2);
+                    for (int i = 0; i < 10; i++)
                     {
-                        ExcelInfo[i] = "---";
+                        if (ExcelInfo[i] == "")
+                        {
+                            DialogResult dr = MessageBox.Show("空白のセルが存在します。" + "\r\n"
+                                + "空白セルには「---」を挿入しますが、よろしいですか？", "確認", MessageBoxButtons.OKCancel);
+                            if (dr == DialogResult.OK)
+                            {
+                                ExcelInfo[i] = "---";
+                            }
+                            else
+                            {
+                                return false;
+                            }
+                        }
                     }
-                    else
-                    {
-                        return false;
-                    }
+                }
+                else
+                {
+                    MessageBox.Show("開発部　受付番号が、入力されていない可能性があります。" + "\r\n" + "見積もり情報シートを確認して下さい。");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex is IOException)
+
+                {
+                    MessageBox.Show("Excelファイルが開いている可能性があります。" + "\r\n"
+                        + "見積もり情報シートを開いている場合は、ファイルを閉じてから、試算書の作成を行って下さい");
+                    return false;
+                }
+                else
+                {
+                    MessageBox.Show("見積もり情報シートを読込中にエラーが発生しました。");
+                    return false;
                 }
             }
             return true;
