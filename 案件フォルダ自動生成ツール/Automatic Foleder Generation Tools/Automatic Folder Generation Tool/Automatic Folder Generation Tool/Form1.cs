@@ -20,6 +20,7 @@ namespace Automatic_Folder_Generation_Tool
         private int FolderCounter;
         private string result;
         private string Folder;
+        private int DefaultCounter;
 
         private Regex r = new Regex("[\\x00-\\x1f<>:\"/\\\\|?*]"
                 + "|^(CON|PRN|AUX|NUL|COM[0-9]|LPT[0-9]|CLOCK\\$)(\\.|$)"
@@ -98,6 +99,7 @@ namespace Automatic_Folder_Generation_Tool
             for (int i = 0; i < 14; i++)
             {
                 FolderList.Items.Add(iniArray[i]);
+                FolderCounter++;
             }
             return true;
         }
@@ -178,13 +180,6 @@ namespace Automatic_Folder_Generation_Tool
                     {
                         result = WorkNumber.Text;
                     }
-                    DirectoryInfo di = new DirectoryInfo(Folder + @"\" + result + "(" + TrimedClien + " " + TrimedProj + ")");
-                    //フォルダ重複確認
-                    if (di.Exists == true)
-                    {
-                        MessageBox.Show("既に" + result + "(" + TrimedClien + " " + TrimedProj + ")" + "は存在します。");
-                        return false;
-                    }
                     //工番名に不正文字が入っていた場合
                     if (r.IsMatch(Trimed))
                     {
@@ -192,18 +187,17 @@ namespace Automatic_Folder_Generation_Tool
                              + "\r\n" + "案件名称の入力内容を再度確認して下さい。");
                         return false;
                     }
-
-                    //案件名称に不正文字が入っていた場合
-                    if (r.IsMatch(TrimedProj))
-                    {
-                        MessageBox.Show("案件名称に、使用できない文字があります。"
-                             + "\r\n" + "案件名称の入力内容を再度確認して下さい。");
-                        return false;
-                    }
                     //顧客名称に不正文字が入っていた場合
                     if (r.IsMatch(TrimedClien))
                     {
                         MessageBox.Show("顧客名称に、使用できない文字があります。"
+                             + "\r\n" + "案件名称の入力内容を再度確認して下さい。");
+                        return false;
+                    }
+                    //案件名称に不正文字が入っていた場合
+                    if (r.IsMatch(TrimedProj))
+                    {
+                        MessageBox.Show("案件名称に、使用できない文字があります。"
                              + "\r\n" + "案件名称の入力内容を再度確認して下さい。");
                         return false;
                     }
@@ -215,12 +209,19 @@ namespace Automatic_Folder_Generation_Tool
                     }
                     if (Regex.IsMatch(Trimed, @"\d{2}([X,Z]|[x,z])-\d{4}") == false)
                     {
-                        MessageBox.Show("開発工番の形は、「◯◯（整数2つ）X-◯◯◯◯（整数４つ）」です。");
+                        MessageBox.Show("開発工番の形は、「◯◯（整数2つ）X（または　Z）-◯◯◯◯（整数４つ）」です。");
                         return false;
                     }
                     if ((result + "(" + TrimedClien + " " + TrimedProj + ")").Length > 100)
                     {
                         MessageBox.Show("フォルダの名称が長すぎます（最大100文字）" + "\r\n" + "フォルダ名を短くしてください");
+                        return false;
+                    }
+                    DirectoryInfo di = new DirectoryInfo(Folder + @"\" + result + "(" + TrimedClien + " " + TrimedProj + ")");
+                    //フォルダ重複確認
+                    if (di.Exists == true)
+                    {
+                        MessageBox.Show("既に" + result + "(" + TrimedClien + " " + TrimedProj + ")" + "は存在します。");
                         return false;
                     }
                 }
@@ -271,7 +272,7 @@ namespace Automatic_Folder_Generation_Tool
                     }
                     if (Regex.IsMatch(Trimed, @"\d{2}([X,Z]|[x,z])-\d{4}") == false)
                     {
-                        MessageBox.Show("開発工番の形は、「◯◯（整数2つ）X-◯◯◯◯（整数４つ）」です。");
+                        MessageBox.Show("開発工番の形は、「◯◯（整数2つ）X（または　Z）-◯◯◯◯（整数４つ）」です。");
                         return false;
                     }
 
@@ -320,6 +321,7 @@ namespace Automatic_Folder_Generation_Tool
                 {
                     var iniFileName = ofd.FileName;
                     FolderList.Items.Clear();
+                    FolderCounter = 0;
                     int iniLines = (File.ReadAllLines(iniFileName).Length) - 1;
                     //セクション名取得
                     char[] buf = new char[1024];
