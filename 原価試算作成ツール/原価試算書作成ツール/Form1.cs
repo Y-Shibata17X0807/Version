@@ -312,6 +312,7 @@ namespace 原価試算書作成ツール
             try
             {
                 var WritePath = DeskPath + @"\HR40-C001_製造原価試算書.xlsx";
+
                 FileStream fs = new FileStream(WritePath, FileMode.Open, FileAccess.Read);
                 var WWork = WorkbookFactory.Create(fs);
                 var WSheet = WWork.GetSheetAt(0);

@@ -212,6 +212,11 @@ namespace Automatic_Folder_Generation_Tool
                         MessageBox.Show("開発工番の形は、「◯◯（整数2つ）X（または　Z）-◯◯◯◯（整数４つ）」です。");
                         return false;
                     }
+                    if (Regex.IsMatch(Trimed, @"\d{0,7}([X,Z]|[x,z])") == false)
+                    {
+                        MessageBox.Show("開発工番の形は、「◯◯（整数2つ）X（または　Z）-◯◯◯◯（整数４つ）」です。");
+                        return false;
+                    }
                     if ((result + "(" + TrimedClien + " " + TrimedProj + ")").Length > 100)
                     {
                         MessageBox.Show("フォルダの名称が長すぎます（最大100文字）" + "\r\n" + "フォルダ名を短くしてください");
@@ -250,6 +255,11 @@ namespace Automatic_Folder_Generation_Tool
                     if (Regex.IsMatch(Trimed, @"^(\d{0,2}([X,Z]|[x,z]))$") == true)
                     {
                         MessageBox.Show("通し番号は、必ず追加して下さい");
+                        return false;
+                    }
+                    if (Regex.IsMatch(Trimed, @"\d{0,6}([X,Z]|[x,z]|\d{0,6}[X,Z]|[x,z])") == true)
+                    {
+                        MessageBox.Show("開発工番の形は、「◯◯（整数2つ）X（または　Z）-◯◯◯◯（整数４つ）」です。");
                         return false;
                     }
                     //12X(x)- or 12Z(z)-の時
