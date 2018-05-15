@@ -53,7 +53,6 @@ C:\Users\HANO-SS\Source\Repos\Version\案件フォルダ自動生成ツール\Au
 C:\Users\HANO-SS\Source\Repos\Version\案件フォルダ自動生成ツール\Automatic Foleder Generation Tools\Automatic Folder Generation Tool\Automatic Folder Generation Tool\obj\Debug\Automatic Folder Generation Tool.pdb
 C:\Users\HANO-SS\Source\Repos\Version\案件フォルダ自動生成ツール\Automatic Foleder Generation Tools\Automatic Folder Generation Tool\Automatic Folder Generation Tool\bin\Debug\Automatic Folder Generation Tool.exe
 C:\Users\HANO-SS\Source\Repos\Version\案件フォルダ自動生成ツール\Automatic Foleder Generation Tools\Automatic Folder Generation Tool\Automatic Folder Generation Tool\bin\Debug\Automatic Folder Generation Tool.pdb
-C:\Users\HANO-SS\Source\Repos\Version\案件フォルダ自動生成ツール\Automatic Foleder Generation Tools\Automatic Folder Generation Tool\Automatic Folder Generation Tool\obj\Debug\Automatic Folder Generation Tool.csprojResolveAssemblyReference.cache
 C:\Users\HANO-SS\Source\Repos\Version\案件フォルダ自動生成ツール\Automatic Foleder Generation Tools\Automatic Folder Generation Tool\Automatic Folder Generation Tool\obj\Debug\Automatic_Folder_Generation_Tool.Form1.resources
 C:\Users\HANO-SS\Source\Repos\Version\案件フォルダ自動生成ツール\Automatic Foleder Generation Tools\Automatic Folder Generation Tool\Automatic Folder Generation Tool\obj\Debug\Automatic_Folder_Generation_Tool.Properties.Resources.resources
 C:\Users\HANO-SS\Source\Repos\Version\案件フォルダ自動生成ツール\Automatic Foleder Generation Tools\Automatic Folder Generation Tool\Automatic Folder Generation Tool\obj\Debug\Automatic Folder Generation Tool.csproj.GenerateResource.Cache
