@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.Output = new System.Windows.Forms.TextBox();
             this.Dialog2 = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
@@ -119,6 +120,7 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.Dialog2);
             this.Controls.Add(this.Output);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "原価試算作成ツール V1.0.0.0 Pre-Alpha";
             this.Load += new System.EventHandler(this.Form1_Load);
