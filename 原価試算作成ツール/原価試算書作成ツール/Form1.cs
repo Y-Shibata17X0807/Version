@@ -95,12 +95,10 @@ namespace 原価試算書作成ツール
                         Console.WriteLine("コピーに成功");
                         if (ReadEx() == true)
                         {
-                            DirectoryInfo di = new DirectoryInfo(DeskPath + @"\原紙試算書フォルダ");
-                            di.Create();
                             if (WriteExManu() == true)
                             {
                                 File.Move(DeskPath + @"\HR40-C001_製造原価試算書.xlsx",
-                                DeskPath + @"\原紙試算書フォルダ\【" + ExcelInfo[0] + "-C0" + ExcelInfo[9] + "】" + "製造原価試算書.xlsx");
+                                DeskPath + @"\【" + ExcelInfo[0] + "-C0" + ExcelInfo[9] + "】" + "製造原価試算書.xlsx");
                             }
                             else
                             {
@@ -112,13 +110,13 @@ namespace 原価試算書作成ツール
                             if (WriteExDev() == true)
                             {
                                 File.Move(DeskPath + @"\HR209-C101_開発原価試算書.xlsx",
-                                DeskPath + @"\原紙試算書フォルダ\【" + ExcelInfo[0] + "-C1" + ExcelInfo[9] + "】" + "開発原価試算書.xlsx");
+                                DeskPath + @"\【" + ExcelInfo[0] + "-C1" + ExcelInfo[9] + "】" + "開発原価試算書.xlsx");
                                 MessageBox.Show("原価試算書の作成が完了しました。");
                             }
                             else
                             {
                                 MessageBox.Show("開発原価試算書の作成に失敗しました。");
-                                File.Delete(DeskPath + @"\HR40-C001_製造原価試算書.xlsx");
+                                File.Delete(DeskPath + @"\  + 【" + ExcelInfo[0] + "- C1" + ExcelInfo[9] + "】" + "_製造原価試算書.xlsx");
                                 File.Delete(DeskPath + @"\HR209-C101_開発原価試算書.xlsx");
                                 return;
                             }
@@ -243,12 +241,24 @@ namespace 原価試算書作成ツール
 
                     row = Sheet.GetRow(7);
                     cell = row.GetCell(1);
-                    ExcelInfo[3] = "●";//見積もり種別（■）
-
+                    if (cell.ToString() == "■")
+                    {
+                        ExcelInfo[3] = "●";//見積もり種別（■）
+                    }
+                    else
+                    {
+                        ExcelInfo[3] = "";
+                    }
                     row = Sheet.GetRow(7);
                     cell = row.GetCell(3);
-                    ExcelInfo[4] = "○";//見積もり種別（□）
-
+                    if (cell.ToString() == "■")
+                    {
+                        ExcelInfo[4] = "●";//見積もり種別（■）
+                    }
+                    else
+                    {
+                        ExcelInfo[4] = "";
+                    }
                     ExcelInfo[5] = "Ver.1";//バージョン
 
                     row = Sheet.GetRow(37);//行
@@ -268,17 +278,24 @@ namespace 原価試算書作成ツール
                     ExcelInfo[9] = ExcelInfo[8].Substring(3, 2);
                     for (int i = 0; i < 10; i++)
                     {
-                        if (ExcelInfo[i] == "")
+                        if (i == 3 || i == 4)
                         {
-                            DialogResult dr = MessageBox.Show("空白のセルが存在します。" + "\r\n"
-                                + "空白セルには「---」を挿入しますが、よろしいですか？", "確認", MessageBoxButtons.OKCancel);
-                            if (dr == DialogResult.OK)
+                            ;
+                        }
+                        else
+                        {
+                            if (ExcelInfo[i] == "")
                             {
-                                ExcelInfo[i] = "---";
-                            }
-                            else
-                            {
-                                return false;
+                                DialogResult dr = MessageBox.Show("空白のセルが存在します。" + "\r\n"
+                                    + "空白セルには「---」を挿入しますが、よろしいですか？", "確認", MessageBoxButtons.OKCancel);
+                                if (dr == DialogResult.OK)
+                                {
+                                    ExcelInfo[i] = "---";
+                                }
+                                else
+                                {
+                                    return false;
+                                }
                             }
                         }
                     }
@@ -350,12 +367,12 @@ namespace 原価試算書作成ツール
                 WSheet = WWork.GetSheetAt(0);
                 row = WSheet.GetRow(20);
                 cell = row.GetCell(2);
-                cell.SetCellValue(ExcelInfo[3]);//試算区分「■」
+                cell.SetCellValue(ExcelInfo[3]);//試算区分
 
                 WSheet = WWork.GetSheetAt(0);
                 row = WSheet.GetRow(21);
                 cell = row.GetCell(2);
-                cell.SetCellValue(ExcelInfo[4]);//試算区分「□」
+                cell.SetCellValue(ExcelInfo[4]);//試算区分
 
                 WSheet = WWork.GetSheetAt(0);
                 row = WSheet.GetRow(20);
@@ -438,12 +455,12 @@ namespace 原価試算書作成ツール
                 WSheet = WWork.GetSheetAt(0);
                 row = WSheet.GetRow(20);
                 cell = row.GetCell(2);
-                cell.SetCellValue(ExcelInfo[3]);//試算区分「■」
+                cell.SetCellValue(ExcelInfo[3]);//試算区分
 
                 WSheet = WWork.GetSheetAt(0);
                 row = WSheet.GetRow(21);
                 cell = row.GetCell(2);
-                cell.SetCellValue(ExcelInfo[4]);//試算区分「□」
+                cell.SetCellValue(ExcelInfo[4]);//試算区分
 
                 WSheet = WWork.GetSheetAt(0);
                 row = WSheet.GetRow(20);

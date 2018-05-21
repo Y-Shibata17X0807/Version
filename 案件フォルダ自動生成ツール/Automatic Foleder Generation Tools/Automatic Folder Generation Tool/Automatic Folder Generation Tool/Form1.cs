@@ -161,13 +161,13 @@ namespace Automatic_Folder_Generation_Tool
                 var TrimedProj = ProjectName.Text.Trim();
                 var TrimedClien = ClientName.Text.Trim();
                 //工番の長さが8文字の場合
-                if (WorkNumber.Text.Length == 8)
+                if (Trimed.Length == 8)
                 {
                     //工番に不正文字が入っていた場合
-                    if (r.IsMatch(WorkNumber.Text))
+                    if (r.IsMatch(Trimed))
                     {
-                        MessageBox.Show("使用できない文字があります。"
-                             + "\r\n" + "工番の入力内容を再度確認して下さい。");
+                        MessageBox.Show("工番名に、使用できない文字があります。"
+                             + "\r\n" + "案件名称の入力内容を再度確認して下さい。");
                         return false;
                     }
                     //x or zが小文字だった場合、大文字に変換
@@ -180,13 +180,13 @@ namespace Automatic_Folder_Generation_Tool
                     {
                         result = WorkNumber.Text;
                     }
-                    //工番名に不正文字が入っていた場合
-                    if (r.IsMatch(Trimed))
-                    {
-                        MessageBox.Show("工番名に、使用できない文字があります。"
-                             + "\r\n" + "案件名称の入力内容を再度確認して下さい。");
-                        return false;
-                    }
+                    ////工番名に不正文字が入っていた場合
+                    //if (r.IsMatch(Trimed))
+                    //{
+                    //    MessageBox.Show("工番名に、使用できない文字があります。"
+                    //         + "\r\n" + "案件名称の入力内容を再度確認して下さい。");
+                    //    return false;
+                    //}
                     //顧客名称に不正文字が入っていた場合
                     if (r.IsMatch(TrimedClien))
                     {
@@ -212,6 +212,7 @@ namespace Automatic_Folder_Generation_Tool
                         MessageBox.Show("開発工番の形は、「◯◯（整数2つ）X（または　Z）-◯◯◯◯（整数４つ）」です。");
                         return false;
                     }
+
                     if (Regex.IsMatch(Trimed, @"\d{0,7}([X,Z]|[x,z])") == false)
                     {
                         MessageBox.Show("開発工番の形は、「◯◯（整数2つ）X（または　Z）-◯◯◯◯（整数４つ）」です。");
