@@ -24,7 +24,7 @@ C:\Users\HANO-SS\Source\Repos\Version\原価試算作成ツール\原価試算�
 C:\Users\HANO-SS\Source\Repos\Version\原価試算作成ツール\原価試算書作成ツール\bin\Debug\NPOI.OpenXml4Net.dll
 C:\Users\HANO-SS\Source\Repos\Version\原価試算作成ツール\原価試算書作成ツール\bin\Debug\NPOI.OpenXmlFormats.dll
 C:\Users\HANO-SS\Source\Repos\Version\原価試算作成ツール\原価試算書作成ツール\bin\Debug\NPOI.xml
-C:\Users\HANO-SS\Source\Repos\Version\原価試算作成ツール\原価試算書作成ツール\obj\Debug\原価試算書作成ツール.csprojResolveAssemblyReference.cache
 C:\Users\HANO-SS\Source\Repos\Version\原価試算作成ツール\原価試算書作成ツール\obj\Debug\原価試算書作成ツール.Form1.resources
 C:\Users\HANO-SS\Source\Repos\Version\原価試算作成ツール\原価試算書作成ツール\obj\Debug\原価試算書作成ツール.Properties.Resources.resources
 C:\Users\HANO-SS\Source\Repos\Version\原価試算作成ツール\原価試算書作成ツール\obj\Debug\原価試算書作成ツール.csproj.GenerateResource.Cache
+C:\Users\HANO-SS\Source\Repos\Version\原価試算作成ツール\原価試算書作成ツール\obj\Debug\原価試算書作成ツール.csprojResolveAssemblyReference.cache

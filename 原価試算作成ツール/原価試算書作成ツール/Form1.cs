@@ -86,6 +86,8 @@ namespace 原価試算書作成ツール
 
         private void CreateBtn_Click(object sender, EventArgs e)
         {
+            CreateBtn.Text = "作成中・・・";
+            CreateBtn.Enabled = false;
             try
             {
                 if (check() == true)
@@ -105,6 +107,8 @@ namespace 原価試算書作成ツール
                                 MessageBox.Show("製造原価試算書の作成に失敗しました。");
                                 File.Delete(DeskPath + @"\HR40-C001_製造原価試算書.xlsx");
                                 File.Delete(DeskPath + @"\HR209-C101_開発原価試算書.xlsx");
+                                CreateBtn.Text = "原価試算書作成開始";
+                                CreateBtn.Enabled = true;
                                 return;
                             }
                             if (WriteExDev() == true)
@@ -112,12 +116,16 @@ namespace 原価試算書作成ツール
                                 File.Move(DeskPath + @"\HR209-C101_開発原価試算書.xlsx",
                                 DeskPath + @"\【" + ExcelInfo[0] + "-C1" + ExcelInfo[9] + "】" + "開発原価試算書.xlsx");
                                 MessageBox.Show("原価試算書の作成が完了しました。");
+                                CreateBtn.Text = "原価試算書作成開始";
+                                CreateBtn.Enabled = true;
                             }
                             else
                             {
                                 MessageBox.Show("開発原価試算書の作成に失敗しました。");
                                 File.Delete(DeskPath + @"\  + 【" + ExcelInfo[0] + "- C1" + ExcelInfo[9] + "】" + "_製造原価試算書.xlsx");
                                 File.Delete(DeskPath + @"\HR209-C101_開発原価試算書.xlsx");
+                                CreateBtn.Text = "原価試算書作成開始";
+                                CreateBtn.Enabled = true;
                                 return;
                             }
                         }
@@ -125,6 +133,8 @@ namespace 原価試算書作成ツール
                         {
                             File.Delete(DeskPath + @"\HR40-C001_製造原価試算書.xlsx");
                             File.Delete(DeskPath + @"\HR209-C101_開発原価試算書.xlsx");
+                            CreateBtn.Text = "原価試算書作成開始";
+                            CreateBtn.Enabled = true;
                             return;
                         }
                     }
@@ -132,6 +142,8 @@ namespace 原価試算書作成ツール
                     {
                         File.Delete(DeskPath + @"\HR40-C001_製造原価試算書.xlsx");
                         File.Delete(DeskPath + @"\HR209-C101_開発原価試算書.xlsx");
+                        CreateBtn.Text = "原価試算書作成開始";
+                        CreateBtn.Enabled = true;
                         return;
                     }
                 }
@@ -139,6 +151,8 @@ namespace 原価試算書作成ツール
                 {
                     File.Delete(DeskPath + @"\HR40-C001_製造原価試算書.xlsx");
                     File.Delete(DeskPath + @"\HR209-C101_開発原価試算書.xlsx");
+                    CreateBtn.Text = "原価試算書作成開始";
+                    CreateBtn.Enabled = true;
                     return;
                 }
             }
@@ -147,17 +161,23 @@ namespace 原価試算書作成ツール
                 if (ex is IOException)
                 {
                     MessageBox.Show("既に同じ名前のファイルが存在します");
+                    File.Delete(DeskPath + @"\HR40-C001_製造原価試算書.xlsx");
+                    File.Delete(DeskPath + @"\HR209-C101_開発原価試算書.xlsx");
+                    CreateBtn.Enabled = true;
                     return;
                 }
             }
             File.Delete(DeskPath + @"\HR40-C001_製造原価試算書.xlsx");
             File.Delete(DeskPath + @"\HR209-C101_開発原価試算書.xlsx");
+            CreateBtn.Text = "原価試算書作成開始";
+            CreateBtn.Enabled = true;
         }
 
         private bool Copy()
         {
             try
             {
+                File.Exists(@"\\Gserver\999_個人フォルダ\柴田\原紙テスト\原紙】HR40-C001*.xlsx");
                 string[] dirs = Directory.GetFiles(@"\\Gserver\999_個人フォルダ\柴田\原紙テスト\", "【原紙】HR40-C001*.xlsx");
                 File.Copy(dirs[0], DeskPath + @"\HR40-C001_製造原価試算書.xlsx");
 
@@ -174,6 +194,16 @@ namespace 原価試算書作成ツール
                 if (ex is UnauthorizedAccessException)
                 {
                     MessageBox.Show("ファイルへのアクセスが拒否されました");
+                    return false;
+                }
+                if (ex is FileNotFoundException)
+                {
+                    MessageBox.Show("コピーする原紙が見つかりませんでした。");
+                    return false;
+                }
+                if (ex is IndexOutOfRangeException)
+                {
+                    MessageBox.Show("原価試算書の一覧を取得できませんでした");
                     return false;
                 }
             }
@@ -203,12 +233,12 @@ namespace 原価試算書作成ツール
 
             if (Directory.Exists(InPath) == false)
             {
-                MessageBox.Show("選択した場所は存在しません");
+                MessageBox.Show("入力された場所は存在しません");
                 return false;
             }
             if (Directory.Exists(OutPath) == false)
             {
-                MessageBox.Show("選択した保存場所は存在しません");
+                MessageBox.Show("入力された保存場所は存在しません");
                 return false;
             }
 
@@ -287,10 +317,10 @@ namespace 原価試算書作成ツール
                             if (ExcelInfo[i] == "")
                             {
                                 DialogResult dr = MessageBox.Show("空白のセルが存在します。" + "\r\n"
-                                    + "空白セルには「---」を挿入しますが、よろしいですか？", "確認", MessageBoxButtons.OKCancel);
+                                    + "空白セルには「-」を挿入しますが、よろしいですか？", "確認", MessageBoxButtons.OKCancel);
                                 if (dr == DialogResult.OK)
                                 {
-                                    ExcelInfo[i] = "---";
+                                    ExcelInfo[i] = "-";
                                 }
                                 else
                                 {
@@ -302,7 +332,7 @@ namespace 原価試算書作成ツール
                 }
                 else
                 {
-                    MessageBox.Show("「開発部　受付番号」が、入力されていない可能性があります。" + "\r\n" + "見積もり情報シートを確認して下さい。");
+                    MessageBox.Show("「開発部　受付番号」が、入力されていません。" + "\r\n" + "見積もり情報シートを確認して下さい。");
                     return false;
                 }
             }
